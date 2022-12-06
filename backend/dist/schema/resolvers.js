@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -21,25 +24,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PersonsResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const schema_1 = require("./schema");
-const { getAllNames } = require("../controllers/persons-controller");
-// const getPersonByName = (name: string): Person | void => {
+const { getAllNames, getDataByName } = require("../controllers/persons-controller");
+// const getPersonsByName = (name: string): Person | void => {
 // }
 let PersonsResolver = class PersonsResolver {
-    constructor() {
-        this.persons = [
-            { name: "John Doe", gender: "f", nationality: 'IL', probability: '0.12' },
-            { name: "John Doe", gender: "f", nationality: 'IL', probability: '0.13' },
-        ];
-        // @Query(() => [Person])
-        // async getPersonsByName(@Arg("name") name: string): Promise<Person[] | undefined> {
-        //     const persons = this.persons;
-        //     return persons;
-        // }
-    }
     getNames() {
         return __awaiter(this, void 0, void 0, function* () {
-            // return getAllNames();
-            return this.persons;
+            return getAllNames();
+        });
+    }
+    getDataByName(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return getDataByName(name);
         });
     }
 };
@@ -49,6 +45,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PersonsResolver.prototype, "getNames", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => schema_1.Person),
+    __param(0, (0, type_graphql_1.Arg)("name")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PersonsResolver.prototype, "getDataByName", null);
 PersonsResolver = __decorate([
     (0, type_graphql_1.Resolver)(() => schema_1.Person)
 ], PersonsResolver);

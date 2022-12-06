@@ -3,13 +3,18 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Person {
+type Details {
   gender: String!
-  name: String!
   nationality: String!
   probability: String!
 }
 
+type Person {
+  details: [Details!]!
+  name: String!
+}
+
 type Query {
+  getDataByName(name: String!): Person!
   getNames: [Person!]!
 }

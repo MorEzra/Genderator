@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Person = void 0;
+exports.Details = exports.Person = void 0;
 const type_graphql_1 = require("type-graphql");
 let Person = class Person {
 };
@@ -18,19 +18,29 @@ __decorate([
     __metadata("design:type", String)
 ], Person.prototype, "name", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], Person.prototype, "gender", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], Person.prototype, "nationality", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], Person.prototype, "probability", void 0);
+    (0, type_graphql_1.Field)(type => [Details]),
+    __metadata("design:type", Array)
+], Person.prototype, "details", void 0);
 Person = __decorate([
     (0, type_graphql_1.ObjectType)()
 ], Person);
 exports.Person = Person;
+let Details = class Details {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], Details.prototype, "gender", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], Details.prototype, "nationality", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], Details.prototype, "probability", void 0);
+Details = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], Details);
+exports.Details = Details;
 //# sourceMappingURL=schema.js.map

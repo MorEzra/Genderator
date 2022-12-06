@@ -12,17 +12,63 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const personsLogic = require("../logic/persons-logic");
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 // get all names from DB
 function getAllNames() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const namesList = yield personsLogic.getAllNames();
-            return namesList;
+            const names = yield personsLogic.getAllNames();
+            return names;
         }
         catch (error) {
             return error;
         }
     });
 }
-module.exports = { getAllNames };
+function getDataByName(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const nationalities = yield getNationalitiesByName(name);
+            let data = [];
+            for (let nationality of nationalities) {
+                let countryID = nationality.country_id;
+                let nameDetails = yield getNameDetailsByCountryID(name, countryID);
+                data.push(nameDetails);
+            }
+            return { name: name, details: data };
+        }
+        catch (error) {
+            return error;
+        }
+    });
+}
+function getNationalitiesByName(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield axios.get(`https://api.nationalize.io?name=${name}`)
+            .then(res => {
+            let nationalities = res.data.country;
+            return nationalities;
+        }).catch(error => {
+            return error.response;
+            // TODO: check
+        });
+    });
+}
+function getNameDetailsByCountryID(name, countryID) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield axios.get(`https://api.genderize.io/?name=${name}&country_id=${countryID}`)
+            .then(res => {
+            let nameDetails = {
+                gender: res.data.gender,
+                nationality: res.data.country_id,
+                probability: res.data.probability
+            };
+            return nameDetails;
+        }).catch(error => {
+            return error.response;
+            // TODO: check
+        });
+    });
+}
+module.exports = { getAllNames, getDataByName };
 //# sourceMappingURL=persons-controller.js.map

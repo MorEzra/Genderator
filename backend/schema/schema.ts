@@ -4,6 +4,12 @@ import { Field, ObjectType } from "type-graphql";
 export class Person {
     @Field()
     name?: string
+    @Field(type => [Details])
+    details?: Details[]
+}
+
+@ObjectType()
+export class Details {
     @Field()
     gender?: string
     @Field()

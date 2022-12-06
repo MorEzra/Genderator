@@ -1,4 +1,4 @@
-import { Query, Resolver, Arg } from "type-graphql"
+import { Query, Resolver, Arg, Mutation } from "type-graphql"
 import { Person } from "./schema"
 
 const { getAllNames, getDataByName } = require("../controllers/persons-controller");
@@ -8,11 +8,6 @@ const { getAllNames, getDataByName } = require("../controllers/persons-controlle
 
 @Resolver(() => Person)
 export class PersonsResolver {
-    // private persons: Person[] = [
-    //     { name: "John Doe", gender: "f", nationality: 'IL', probability: '0.12' },
-    //     { name: "John Doe", gender: "f", nationality: 'IL', probability: '0.13' },
-    // ]
-
     @Query(() => [Person])
     async getNames(): Promise<Person[]> {
         return getAllNames();
@@ -22,4 +17,36 @@ export class PersonsResolver {
     async getDataByName(@Arg("name") name: string): Promise<Person> {
         return getDataByName(name);
     }
+
+    // @Mutation(() => Person)
+    // async createNameRecord(@Arg("input") input: Person): Promise<User> {
+    //     const user = {
+    //         id: this.users.length + 1,
+    //         ...input,
+    //     }
+        
+    //     this.users.push(user)
+    //     return user
+    // }
+
+    // @Mutation(() => User)
+    // async updateUser(
+    //     @Arg("id") id: number,
+    //     @Arg("input") input: UserInput
+    // ): Promise<User> {
+    //     const user = this.users.find(u => u.id === id)
+        
+    //     if (!user) {
+    //         throw new Error("User not found")
+    //     }
+
+    //     const updatedUser = {
+    //         ...user,
+    //         ...input,
+    //     }
+
+    //     this.users = this.users.map(u => (u.id === id ? updatedUser : u))
+
+    //     return updatedUser
+    // }
 }

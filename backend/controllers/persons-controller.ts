@@ -2,11 +2,12 @@ const personsLogic = require("../logic/persons-logic");
 const express = require("express");
 
 const router = express.Router();
+const axios = require("axios");
 
-import { Person } from '../models/Person';
+import { Person, Details } from '../models/Person';
 
 // get all names from DB
-async function getAllNames():Promise<Person[]> {
+async function getAllNames(): Promise<Person[]> {
     try {
         const names: Person[] = await personsLogic.getAllNames();
         return names;
@@ -16,14 +17,51 @@ async function getAllNames():Promise<Person[]> {
     }
 }
 
-async function getDataByName(name:string):Promise<Person> {
+async function getDataByName(name: string): Promise<Person> {
     try {
-        const data: Person = await personsLogic.getAllNames();
-        return data;
+        const nationalities: any = await getNationalitiesByName(name);
+
+        let data: Details[] = [];
+
+        for (let nationality of nationalities) {
+            let countryID = nationality.country_id;
+
+            let nameDetails: Details = await getNameDetailsByCountryID(name, countryID);
+            data.push(nameDetails);
+        }
+
+        return { name: name, details: data };
     }
     catch (error) {
         return error;
     }
+}
+
+async function getNationalitiesByName(name: string): Promise<any> {
+    return await axios.get(`https://api.nationalize.io?name=${name}`)
+        .then(res => {
+            let nationalities = res.data.country;
+            return nationalities;
+        }).catch(error => {
+            return error.response;
+            // TODO: check
+        });
+}
+
+async function getNameDetailsByCountryID(name: string, countryID: string): Promise<Details> {
+    return await axios.get(`https://api.genderize.io/?name=${name}&country_id=${countryID}`)
+        .then(res => {
+            let nameDetails: Details = {
+                gender: res.data.gender,
+                nationality: res.data.country_id,
+                probability: res.data.probability
+            }
+
+            return nameDetails;
+        }).catch(error => {
+            return error.response;
+            // TODO: check
+        });
 }
 
 module.exports = { getAllNames, getDataByName };
