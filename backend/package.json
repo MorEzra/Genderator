@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/app.js.js",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "npx tsc && nodemon dist/src/app.js",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
