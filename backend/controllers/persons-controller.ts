@@ -1,21 +1,29 @@
 const personsLogic = require("../logic/persons-logic");
 const express = require("express");
-const url = require('url');
 
 const router = express.Router();
 
 import { Person } from '../models/Person';
 
 // get all names from DB
-router.get("/", async (request, response, next) => {
-
+async function getAllNames():Promise<Person[]> {
     try {
-        const namesList: Person[] = await personsLogic.getAllNames();
-        response.json(namesList);
+        const names: Person[] = await personsLogic.getAllNames();
+        return names;
     }
     catch (error) {
-        return next(error);
+        return error;
     }
-});
+}
 
-module.exports = router;
+async function getDataByName(name:string):Promise<Person> {
+    try {
+        const data: Person = await personsLogic.getAllNames();
+        return data;
+    }
+    catch (error) {
+        return error;
+    }
+}
+
+module.exports = { getAllNames, getDataByName };
