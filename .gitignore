@@ -1,1 +1,4 @@
 node_modules/
+backend/dist/app.js
+backend/dist/app.js.map
+.DS_Store
