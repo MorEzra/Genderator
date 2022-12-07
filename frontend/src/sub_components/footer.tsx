@@ -3,7 +3,7 @@ export default function Footer() {
         <div className="footer">
             <h5>All Rights Reserved</h5>
             <span style={{ margin: '0 5px' }}> © </span>
-            <img width={30} src="./favicon_dark.svg" alt="Mor Ezra logo" />
+            <img width={30} src="./favicon_light.svg" alt="Mor Ezra logo" />
         </div>
     )
 }
