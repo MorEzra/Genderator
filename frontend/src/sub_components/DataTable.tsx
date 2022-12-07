@@ -1,5 +1,5 @@
-import React, { Component, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Person } from '../models/Person';
 
 import Table from '@mui/material/Table';
@@ -10,44 +10,26 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-export default function DataTable() {
-    const [persons, setPersons] = useState([]);
+const DataTable = ({ allNames }: any) => {
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        getAllPersons();
-        for (let person of persons) {
-            let row = createData(person.name, person.gender, person.nationality, person.probability);
+        let tempRows: Person[] = [];
+
+        for (let person of allNames) {
+            let row: Person = createData(person.name, person.gender, person.nationality, person.probability);
+            tempRows.push(row);
         }
-    }, [])
 
-    const getAllPersons = async () => {
-        await axios.get('http://localhost:3001/graphql')
-            .then(res => {
-                setPersons(res.data);
-            }).catch(error => {
-                let errorMsg = 'Error...';
-
-                // if (error.response) {
-                //     errorMsg = `${error.response.statusText} (${error.response.status})`;
-                // } else {
-                //     errorMsg = error.message;
-                // }
-
-                // console.log("Error: ", errorMsg);
-                // displaySnackbar(errorMsg, 'error');
-                // setTimeout(() => {
-                //     initSnackbar();
-                // }, 2500);
-            })
-    }
+        setRows(tempRows);
+    }, [allNames])
 
     function createData(
         name: string,
         gender: string,
         nationality: string,
         probability: string,
-    ) {
+    ): Person {
         return { name, gender, nationality, probability };
     }
 
@@ -56,11 +38,10 @@ export default function DataTable() {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Dessert (100g serving)</TableCell>
-                        <TableCell align="right">Calories</TableCell>
-                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell align="right">Gender</TableCell>
+                        <TableCell align="right">Nationality</TableCell>
+                        <TableCell align="right">Probability</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -71,14 +52,22 @@ export default function DataTable() {
                             <TableCell component="th" scope="row">
                                 {row.name}
                             </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
-                            <TableCell align="right">{row.carbs}</TableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
+                            <TableCell align="right">{row.gender}</TableCell>
+                            <TableCell align="right">{row.nationality}</TableCell>
+                            <TableCell align="right">{row.probability}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
         </TableContainer>
     );
-} 
+}
+
+// Redux state and actions
+const mapStateToProps: any = (state: any) => {
+    return {
+        allNames: state.allNamesForDisplay,
+    }
+};
+
+export default connect(mapStateToProps)(DataTable);
