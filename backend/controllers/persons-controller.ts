@@ -64,4 +64,17 @@ async function getNameDetailsByCountryID(name: string, countryID: string): Promi
         });
 }
 
-module.exports = { getAllNames, getDataByName };
+async function setNewNameRecord(record) {
+    try {
+        let user = await personsLogic.getUserByName(record.name);
+
+        // if name doesn't exist on DB then insert it
+        if (user.length < 0)
+            await personsLogic.setNewNameRecord(record);
+    }
+    catch (error) {
+        return error;
+    }
+}
+
+module.exports = { getAllNames, getDataByName, setNewNameRecord };

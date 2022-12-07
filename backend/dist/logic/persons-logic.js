@@ -13,5 +13,20 @@ function getAllNames() {
         return yield personsDao.getAllNamesFromDB();
     });
 }
-module.exports = { getAllNames };
+function setNewNameRecord(record) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield personsDao.setNewNameRecordToDB(record);
+    });
+}
+function updateNameRecord(record) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield personsDao.updateNameRecordToDB(record);
+    });
+}
+function getUserByName(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield personsDao.getUserByNameFromDB(name);
+    });
+}
+module.exports = { getAllNames, setNewNameRecord, updateNameRecord, getUserByName };
 //# sourceMappingURL=persons-logic.js.map

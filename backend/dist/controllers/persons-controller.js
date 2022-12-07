@@ -70,5 +70,29 @@ function getNameDetailsByCountryID(name, countryID) {
         });
     });
 }
-module.exports = { getAllNames, getDataByName };
+function setNewNameRecord(record) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let user = yield personsLogic.getUserByName(record.name);
+            if (user.length > 0)
+                yield personsLogic.updateNameRecord(record);
+            else
+                yield personsLogic.setNewNameRecord(record);
+        }
+        catch (error) {
+            return error;
+        }
+    });
+}
+function updateNameRecord(record) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield personsLogic.updateNameRecord(record);
+        }
+        catch (error) {
+            return error;
+        }
+    });
+}
+module.exports = { getAllNames, getDataByName, setNewNameRecord, updateNameRecord };
 //# sourceMappingURL=persons-controller.js.map

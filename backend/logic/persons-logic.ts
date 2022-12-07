@@ -4,4 +4,12 @@ async function getAllNames() {
     return await personsDao.getAllNamesFromDB();
 }
 
-module.exports = { getAllNames }
+async function setNewNameRecord(record) {
+    await personsDao.setNewNameRecordToDB(record);
+}
+
+async function getUserByName(name) {
+    return await personsDao.getUserByNameFromDB(name);
+}
+
+module.exports = { getAllNames, setNewNameRecord, getUserByName }

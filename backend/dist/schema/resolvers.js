@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PersonsResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const schema_1 = require("./schema");
-const { getAllNames, getDataByName } = require("../controllers/persons-controller");
+const { getAllNames, getDataByName, setNewNameRecord } = require("../controllers/persons-controller");
 // const getPersonsByName = (name: string): Person | void => {
 // }
 let PersonsResolver = class PersonsResolver {
@@ -35,7 +35,9 @@ let PersonsResolver = class PersonsResolver {
     }
     getDataByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return getDataByName(name);
+            let person = yield getDataByName(name);
+            yield setNewNameRecord(person);
+            return person;
         });
     }
 };
