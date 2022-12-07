@@ -1,6 +1,6 @@
 export type Person = {
     name?: string,
-    details?: Details[] | any
+    details?: Details[]
 };
 
 export type Details = {
