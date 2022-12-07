@@ -13,12 +13,17 @@ async function getAllNames(): Promise<Person[]> {
         return names;
     }
     catch (error) {
+        // throw error
         return error;
     }
 }
 
 async function getDataByName(name: string): Promise<Person> {
     try {
+        if (name.trim().length == 0) {
+            // throw error
+        }
+
         const nationality: any = await getNationalityByName(name);
 
         let countryID = nationality.country_id;
@@ -28,6 +33,7 @@ async function getDataByName(name: string): Promise<Person> {
         return nameDetails;
     }
     catch (error) {
+        // throw error
         return error;
     }
 }
@@ -39,7 +45,7 @@ async function getNationalityByName(name: string): Promise<any> {
             return nationality;
         }).catch(error => {
             console.log(error);
-            
+
             return error;
             // TODO: check
         });
@@ -58,7 +64,7 @@ async function getNameDetailsByCountryID(name: string, countryID: string): Promi
             return nameDetails;
         }).catch(error => {
             console.log(error);
-            
+
             return error;
             // TODO: check
         });
