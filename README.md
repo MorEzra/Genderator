@@ -1,4 +1,4 @@
-# Getting Started with Name search
+# Getting Started with Genderator
 
 ## Install the required modules
 
