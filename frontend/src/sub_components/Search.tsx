@@ -7,7 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import { Person } from '../models/Person';
 
-const Search = ({ allNames, SetAllNamesForDisplay }: any) => {
+const Search = ({ getAllPersons, allNames, SetAllNamesForDisplay }: any) => {
     const [name, setName] = useState('');
 
     const handleClick = () => {
@@ -21,7 +21,8 @@ const Search = ({ allNames, SetAllNamesForDisplay }: any) => {
             }
         }
         else {
-            SetAllNamesForDisplay(allNames);
+            // I get all persons from db again in case that new names were added
+            getAllPersons();
         }
     }
 

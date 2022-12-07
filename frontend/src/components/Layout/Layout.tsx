@@ -42,7 +42,7 @@ const Layout = ({ SetAllNames }: any) => {
 
     return (
         <div>
-            <Search />
+            <Search getAllPersons={getAllPersons} />
             <DataTable />
         </div>
     );
