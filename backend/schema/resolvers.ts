@@ -1,4 +1,4 @@
-import { Query, Resolver, Arg, Mutation } from "type-graphql"
+import { Query, Resolver, Arg } from "type-graphql"
 import { Person } from "./schema"
 
 const { getAllNames, getDataByName, setNewNameRecord } = require("../controllers/persons-controller");

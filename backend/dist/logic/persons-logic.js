@@ -18,15 +18,10 @@ function setNewNameRecord(record) {
         yield personsDao.setNewNameRecordToDB(record);
     });
 }
-function updateNameRecord(record) {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield personsDao.updateNameRecordToDB(record);
-    });
-}
 function getUserByName(name) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield personsDao.getUserByNameFromDB(name);
     });
 }
-module.exports = { getAllNames, setNewNameRecord, updateNameRecord, getUserByName };
+module.exports = { getAllNames, setNewNameRecord, getUserByName };
 //# sourceMappingURL=persons-logic.js.map

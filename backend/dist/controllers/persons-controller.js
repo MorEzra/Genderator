@@ -28,28 +28,25 @@ function getAllNames() {
 function getDataByName(name) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const nationalities = yield getNationalitiesByName(name);
-            let data = [];
-            for (let nationality of nationalities) {
-                let countryID = nationality.country_id;
-                let nameDetails = yield getNameDetailsByCountryID(name, countryID);
-                data.push(nameDetails);
-            }
-            return { name: name, details: data };
+            const nationality = yield getNationalityByName(name);
+            let countryID = nationality.country_id;
+            let nameDetails = yield getNameDetailsByCountryID(name, countryID);
+            return nameDetails;
         }
         catch (error) {
             return error;
         }
     });
 }
-function getNationalitiesByName(name) {
+function getNationalityByName(name) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield axios.get(`https://api.nationalize.io?name=${name}`)
             .then(res => {
-            let nationalities = res.data.country;
-            return nationalities;
+            let nationality = res.data.country[0];
+            return nationality;
         }).catch(error => {
-            return error.response;
+            console.log(error);
+            return error;
             // TODO: check
         });
     });
@@ -59,13 +56,15 @@ function getNameDetailsByCountryID(name, countryID) {
         return yield axios.get(`https://api.genderize.io/?name=${name}&country_id=${countryID}`)
             .then(res => {
             let nameDetails = {
+                name: res.data.name,
                 gender: res.data.gender,
                 nationality: res.data.country_id,
                 probability: res.data.probability
             };
             return nameDetails;
         }).catch(error => {
-            return error.response;
+            console.log(error);
+            return error;
             // TODO: check
         });
     });
@@ -74,9 +73,8 @@ function setNewNameRecord(record) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let user = yield personsLogic.getUserByName(record.name);
-            if (user.length > 0)
-                yield personsLogic.updateNameRecord(record);
-            else
+            // if name doesn't exist on DB then insert it
+            if (user.length == 0)
                 yield personsLogic.setNewNameRecord(record);
         }
         catch (error) {
@@ -84,15 +82,5 @@ function setNewNameRecord(record) {
         }
     });
 }
-function updateNameRecord(record) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield personsLogic.updateNameRecord(record);
-        }
-        catch (error) {
-            return error;
-        }
-    });
-}
-module.exports = { getAllNames, getDataByName, setNewNameRecord, updateNameRecord };
+module.exports = { getAllNames, getDataByName, setNewNameRecord };
 //# sourceMappingURL=persons-controller.js.map

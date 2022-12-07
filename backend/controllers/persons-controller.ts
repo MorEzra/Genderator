@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-import { Person, Details } from '../models/Person';
+import { Person } from '../models/Person';
 
 // get all names from DB
 async function getAllNames(): Promise<Person[]> {
@@ -19,39 +19,37 @@ async function getAllNames(): Promise<Person[]> {
 
 async function getDataByName(name: string): Promise<Person> {
     try {
-        const nationalities: any = await getNationalitiesByName(name);
+        const nationality: any = await getNationalityByName(name);
 
-        let data: Details[] = [];
+        let countryID = nationality.country_id;
 
-        for (let nationality of nationalities) {
-            let countryID = nationality.country_id;
+        let nameDetails: Person = await getNameDetailsByCountryID(name, countryID);
 
-            let nameDetails: Details = await getNameDetailsByCountryID(name, countryID);
-            data.push(nameDetails);
-        }
-
-        return { name: name, details: data };
+        return nameDetails;
     }
     catch (error) {
         return error;
     }
 }
 
-async function getNationalitiesByName(name: string): Promise<any> {
+async function getNationalityByName(name: string): Promise<any> {
     return await axios.get(`https://api.nationalize.io?name=${name}`)
         .then(res => {
-            let nationalities = res.data.country;
-            return nationalities;
+            let nationality = res.data.country[0];
+            return nationality;
         }).catch(error => {
-            return error.response;
+            console.log(error);
+            
+            return error;
             // TODO: check
         });
 }
 
-async function getNameDetailsByCountryID(name: string, countryID: string): Promise<Details> {
+async function getNameDetailsByCountryID(name: string, countryID: string): Promise<Person> {
     return await axios.get(`https://api.genderize.io/?name=${name}&country_id=${countryID}`)
         .then(res => {
-            let nameDetails: Details = {
+            let nameDetails: Person = {
+                name: res.data.name,
                 gender: res.data.gender,
                 nationality: res.data.country_id,
                 probability: res.data.probability
@@ -59,7 +57,9 @@ async function getNameDetailsByCountryID(name: string, countryID: string): Promi
 
             return nameDetails;
         }).catch(error => {
-            return error.response;
+            console.log(error);
+            
+            return error;
             // TODO: check
         });
 }
@@ -69,7 +69,7 @@ async function setNewNameRecord(record) {
         let user = await personsLogic.getUserByName(record.name);
 
         // if name doesn't exist on DB then insert it
-        if (user.length < 0)
+        if (user.length == 0)
             await personsLogic.setNewNameRecord(record);
     }
     catch (error) {

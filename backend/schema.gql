@@ -3,15 +3,11 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Details {
+type Person {
   gender: String!
+  name: String!
   nationality: String!
   probability: String!
-}
-
-type Person {
-  details: [Details!]!
-  name: String!
 }
 
 type Query {

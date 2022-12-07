@@ -18,16 +18,10 @@ function setNewNameRecordToDB(record) {
         yield mongodbConnection.getDB().collection("names").insertOne(record);
     });
 }
-function updateNameRecordToDB(record) {
-    return __awaiter(this, void 0, void 0, function* () {
-        console.log(record);
-        yield mongodbConnection.getDB().collection("names").updateOne({ name: record.name });
-    });
-}
 function getUserByNameFromDB(name) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield mongodbConnection.getDB().collection("names").find({ name: name }).toArray();
     });
 }
-module.exports = { getAllNamesFromDB, setNewNameRecordToDB, updateNameRecordToDB, getUserByNameFromDB };
+module.exports = { getAllNamesFromDB, setNewNameRecordToDB, getUserByNameFromDB };
 //# sourceMappingURL=persons-dao.js.map
