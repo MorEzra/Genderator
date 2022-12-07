@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Search from '../../sub_components/Search';
 import DataTable from '../../sub_components/DataTable';
+import Container from '@mui/material/Container';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { Person } from '../../models/Person';
@@ -49,7 +50,7 @@ const Layout = ({ setAllNames, toggleIsShowSnacknar, setSnackbarMessage, setSnac
     }
 
     return (
-        <div>
+        <Container maxWidth="lg">
             <Search getAllPersons={getAllPersons} displaySnackbar={displaySnackbar} initSnackbar={initSnackbar} />
             <DataTable />
 
@@ -59,7 +60,7 @@ const Layout = ({ setAllNames, toggleIsShowSnacknar, setSnackbarMessage, setSnac
                 open={isShowSnackbar}
             ><Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
             </Snackbar>
-        </div>
+        </Container>
     );
 }
 

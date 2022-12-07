@@ -5,25 +5,26 @@ import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import { Person } from '../models/Person';
 
 const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, setAllNamesForDisplay }: any) => {
     const [name, setName] = useState('');
 
-    const handleClick = () => {
-        if (name.trim().length > 0) {
-            let filteredName = allNames.filter((n: Person) => n.name == name);
+    const handleGetByNameClick = () => {
+        let filteredName = allNames.filter((n: Person) => n.name == name);
 
-            if (filteredName.length > 0) {
-                setAllNamesForDisplay(filteredName);
-            } else {
-                getAllPersonsByName(name);
-            }
+        if (filteredName.length > 0) {
+            setAllNamesForDisplay(filteredName);
+        } else {
+            getAllPersonsByName(name);
         }
-        else {
-            // I get all persons from db again in case that new names were added
-            getAllPersons();
-        }
+    }
+
+    const handleGetAllClick = () => {
+        setName('');
+        // I get all persons from db again in case that new names were added
+        getAllPersons();
     }
 
     const onTagsChange = (event: any, values: any) => {
@@ -47,7 +48,7 @@ const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, setAll
 
                 console.log("Error: ", errorMsg);
                 console.log("GraphQL error: ", error.response.data.errors[0]);
-                
+
                 displaySnackbar(errorMsg, 'error');
                 setTimeout(() => {
                     initSnackbar();
@@ -63,6 +64,7 @@ const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, setAll
                 disableClearable
                 options={allNames.map((option: Person) => option.name)}
                 onChange={onTagsChange}
+                inputValue={name}
                 renderInput={(params) => (
                     <TextField
                         {...params}
@@ -75,7 +77,10 @@ const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, setAll
                     />
                 )}
             />
-            <Button variant="contained" onClick={handleClick}>Search</Button>
+            <Stack spacing={2} direction="row" sx={{ margin: '10px auto' }}>
+                <Button sx={{ backgroundColor: '#588CC6' }} variant="contained" onClick={handleGetByNameClick} disabled={name.trim().length == 0}>Search</Button>
+                <Button sx={{ backgroundColor: '#588CC6' }} variant="contained" onClick={handleGetAllClick}>Get all names</Button>
+            </Stack>
         </div>
     );
 }
