@@ -1,3 +1,4 @@
 export enum ActionType {
-    SetAllNames,
+    SetAllNames = 'SetAllNames',
+    SetAllNamesForDisplay = 'SetAllNamesForDisplay'
 }
