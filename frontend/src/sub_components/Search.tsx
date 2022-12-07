@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Person } from '../models/Person';
 
-const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, setAllNamesForDisplay }: any) => {
+const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, allNamesForDisplay, setAllNamesForDisplay }: any) => {
     const [name, setName] = useState('');
 
     const handleGetByNameClick = () => {
@@ -79,7 +79,7 @@ const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, setAll
             />
             <Stack spacing={2} direction="row" sx={{ margin: '10px auto' }}>
                 <Button sx={{ backgroundColor: '#588CC6' }} variant="contained" onClick={handleGetByNameClick} disabled={name.trim().length == 0}>Search</Button>
-                <Button sx={{ backgroundColor: '#588CC6' }} variant="contained" onClick={handleGetAllClick}>Get all names</Button>
+                <Button sx={{ backgroundColor: '#588CC6' }} variant="contained" onClick={handleGetAllClick} disabled={allNamesForDisplay.length == 0}>Get all names</Button>
             </Stack>
         </div>
     );
