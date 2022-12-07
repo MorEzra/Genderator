@@ -26,11 +26,15 @@ const Layout = ({ setAllNames, toggleIsShowSnacknar, setSnackbarMessage, setSnac
 
                 setAllNames(data);
             }).catch(error => {
-                let errorMsg = `${error.response.statusText} (${error.response.status})`;
+                let errorMsg = "Error...";
+                if (error.response) {
+                    errorMsg = `${error.response.statusText} (${error.response.status})`;
+                } else {
+                    errorMsg = error.message;
+                }
 
                 console.log("Error: ", errorMsg);
-                console.log("GraphQL error: ", error.response.data.errors[0]);
-                
+
                 displaySnackbar(errorMsg, 'error');
                 setTimeout(() => {
                     initSnackbar();
@@ -54,7 +58,7 @@ const Layout = ({ setAllNames, toggleIsShowSnacknar, setSnackbarMessage, setSnac
         <Container maxWidth="lg">
             <Search getAllPersons={getAllPersons} displaySnackbar={displaySnackbar} initSnackbar={initSnackbar} />
             <DataTable />
-            <Footer/>
+            <Footer />
 
             {/* snackbar for error messages */}
             <Snackbar

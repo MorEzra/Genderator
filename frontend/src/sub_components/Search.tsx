@@ -44,10 +44,14 @@ const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, allNam
 
                 setAllNamesForDisplay([data]);
             }).catch(error => {
-                let errorMsg = `${error.response.statusText} (${error.response.status})`;
+                let errorMsg = "Error...";
+                if (error.response) {
+                    errorMsg = `${error.response.statusText} (${error.response.status})`;
+                } else {
+                    errorMsg = error.message;
+                }
 
                 console.log("Error: ", errorMsg);
-                console.log("GraphQL error: ", error.response.data.errors[0]);
 
                 displaySnackbar(errorMsg, 'error');
                 setTimeout(() => {
