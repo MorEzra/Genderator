@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { Person } from '../../models/Person';
+import Footer from '../../sub_components/footer';
 
 const Layout = ({ setAllNames, toggleIsShowSnacknar, setSnackbarMessage, setSnackbarSeverity, isShowSnackbar, snackbarMessage, snackbarSeverity }: any) => {
     useEffect(() => {
@@ -53,6 +54,7 @@ const Layout = ({ setAllNames, toggleIsShowSnacknar, setSnackbarMessage, setSnac
         <Container maxWidth="lg">
             <Search getAllPersons={getAllPersons} displaySnackbar={displaySnackbar} initSnackbar={initSnackbar} />
             <DataTable />
+            <Footer/>
 
             {/* snackbar for error messages */}
             <Snackbar
