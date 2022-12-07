@@ -13,6 +13,7 @@ const personsLogic = require("../logic/persons-logic");
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const { errorName } = require('../errors/errorConstant');
 // get all names from DB
 function getAllNames() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -21,20 +22,23 @@ function getAllNames() {
             return names;
         }
         catch (error) {
-            return error;
+            throw new Error(error.response);
         }
     });
 }
 function getDataByName(name) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            if (name.trim().length == 0) {
+                // throw error
+            }
             const nationality = yield getNationalityByName(name);
             let countryID = nationality.country_id;
             let nameDetails = yield getNameDetailsByCountryID(name, countryID);
             return nameDetails;
         }
         catch (error) {
-            return error;
+            throw new Error(error.response);
         }
     });
 }
@@ -45,9 +49,7 @@ function getNationalityByName(name) {
             let nationality = res.data.country[0];
             return nationality;
         }).catch(error => {
-            console.log(error);
-            return error;
-            // TODO: check
+            throw new Error(error.response);
         });
     });
 }
@@ -63,9 +65,7 @@ function getNameDetailsByCountryID(name, countryID) {
             };
             return nameDetails;
         }).catch(error => {
-            console.log(error);
-            return error;
-            // TODO: check
+            throw new Error(error.response);
         });
     });
 }
@@ -78,7 +78,7 @@ function setNewNameRecord(record) {
                 yield personsLogic.setNewNameRecord(record);
         }
         catch (error) {
-            return error;
+            throw new Error(error.response);
         }
     });
 }

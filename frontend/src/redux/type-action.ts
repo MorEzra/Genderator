@@ -1,4 +1,7 @@
 export enum ActionType {
-    SetAllNames = 'SetAllNames',
-    SetAllNamesForDisplay = 'SetAllNamesForDisplay'
+    setAllNames = 'setAllNames',
+    setAllNamesForDisplay = 'setAllNamesForDisplay',
+    toggleIsShowSnackbar = 'toggleIsShowSnackbar',
+    setSnackbarMessage = 'setSnackbarMessage',
+    setSnackbarSeverity = 'setSnackbarSeverity'
 }

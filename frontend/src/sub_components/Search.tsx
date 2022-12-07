@@ -7,7 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import { Person } from '../models/Person';
 
-const Search = ({ getAllPersons, allNames, SetAllNamesForDisplay }: any) => {
+const Search = ({ displaySnackbar, initSnackbar, getAllPersons, allNames, setAllNamesForDisplay }: any) => {
     const [name, setName] = useState('');
 
     const handleClick = () => {
@@ -15,7 +15,7 @@ const Search = ({ getAllPersons, allNames, SetAllNamesForDisplay }: any) => {
             let filteredName = allNames.filter((n: Person) => n.name == name);
 
             if (filteredName.length > 0) {
-                SetAllNamesForDisplay(filteredName);
+                setAllNamesForDisplay(filteredName);
             } else {
                 getAllPersonsByName(name);
             }
@@ -41,21 +41,17 @@ const Search = ({ getAllPersons, allNames, SetAllNamesForDisplay }: any) => {
             .then(res => {
                 let data = res.data.data.getDataByName;
 
-                SetAllNamesForDisplay([data]);
+                setAllNamesForDisplay([data]);
             }).catch(error => {
-                let errorMsg = 'Error...';
+                let errorMsg = `${error.response.statusText} (${error.response.status})`;
 
-                // if (error.response) {
-                //     errorMsg = `${error.response.statusText} (${error.response.status})`;
-                // } else {
-                //     errorMsg = error.message;
-                // }
-
-                // console.log("Error: ", errorMsg);
-                // displaySnackbar(errorMsg, 'error');
-                // setTimeout(() => {
-                //     initSnackbar();
-                // }, 2500);
+                console.log("Error: ", errorMsg);
+                console.log("GraphQL error: ", error.response.data.errors[0]);
+                
+                displaySnackbar(errorMsg, 'error');
+                setTimeout(() => {
+                    initSnackbar();
+                }, 2500);
             })
     }
 
@@ -94,7 +90,7 @@ const mapStateToProps: any = (state: any) => {
 
 const mapDispatchToProps: any = (dispatch: any) => {
     return {
-        SetAllNamesForDisplay: (data: any) => dispatch({ type: "SetAllNamesForDisplay", payload: data }),
+        setAllNamesForDisplay: (data: any) => dispatch({ type: "setAllNamesForDisplay", payload: data }),
     }
 }
 

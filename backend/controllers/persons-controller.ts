@@ -4,6 +4,8 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
+const {errorName} = require('../errors/errorConstant');
+
 import { Person } from '../models/Person';
 
 // get all names from DB
@@ -13,8 +15,7 @@ async function getAllNames(): Promise<Person[]> {
         return names;
     }
     catch (error) {
-        // throw error
-        return error;
+        throw new Error(error.response);
     }
 }
 
@@ -33,8 +34,7 @@ async function getDataByName(name: string): Promise<Person> {
         return nameDetails;
     }
     catch (error) {
-        // throw error
-        return error;
+        throw new Error(error.response);
     }
 }
 
@@ -44,10 +44,7 @@ async function getNationalityByName(name: string): Promise<any> {
             let nationality = res.data.country[0];
             return nationality;
         }).catch(error => {
-            console.log(error);
-
-            return error;
-            // TODO: check
+            throw new Error(error.response);
         });
 }
 
@@ -63,10 +60,7 @@ async function getNameDetailsByCountryID(name: string, countryID: string): Promi
 
             return nameDetails;
         }).catch(error => {
-            console.log(error);
-
-            return error;
-            // TODO: check
+            throw new Error(error.response);
         });
 }
 
@@ -79,7 +73,7 @@ async function setNewNameRecord(record) {
             await personsLogic.setNewNameRecord(record);
     }
     catch (error) {
-        return error;
+        throw new Error(error.response);
     }
 }
 

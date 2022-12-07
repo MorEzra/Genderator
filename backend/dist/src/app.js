@@ -29,7 +29,10 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     server.use(cors({ origin: "http://localhost:3000", credentials: true }));
     server.use('/graphql', graphqlHTTP({
         schema: schema,
-        graphiql: true
+        graphiql: true,
+        customFormatErrorFn: (err) => {
+            return err.message;
+        }
     }));
     server.listen(process.env.PORT || port, () => console.log(`Listening on ${port}`));
 });
